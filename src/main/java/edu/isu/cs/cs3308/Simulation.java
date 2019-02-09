@@ -1,6 +1,5 @@
 package edu.isu.cs.cs3308;
 
-import edu.isu.cs.cs3308.structures.Queue;
 import edu.isu.cs.cs3308.structures.impl.LinkedQueue;
 import java.util.Random;
 
@@ -18,6 +17,7 @@ public class Simulation {
     private int numIterations = 50;
 
     private int dailyMinutes = 720;
+    private int timer = 0;
     private int countPeopleDone = 0;
     private int queueWaitTime = 0;
     private int iterateWaitTime = 0;
@@ -67,13 +67,17 @@ public class Simulation {
     public void runSimulation() {
         for (int numQueue = 1; numQueue <= maxNumQueues; numQueue++) {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
-                createQueuesNeeded(numQueue);
-                getAverageWaitTime(numQueue);
+                createQueueAmount(numQueue);
+
+                for (timer = 0; timer < dailyMinutes; timer++) {
+                    addPeopleToQueues();
+                    removeTwoFromEach();
+                }
             }
         }
     }
 
-    private void createQueuesNeeded(int numOfQueues) {
+    private void createQueueAmount(int numOfQueues) {
         allLines = new LinkedQueue[numOfQueues];
 
         for (int makeLanes = 0; makeLanes < numOfQueues; makeLanes++) {
@@ -81,9 +85,11 @@ public class Simulation {
         }
     }
 
-    private void getAverageWaitTime(int numOfQueues) {
-        for (int timer = 0; timer < dailyMinutes; timer++) {
+    private void addPeopleToQueues() {
+        int minutePeople = getPeoplePerMinute();
 
+        for (int person = 0; person < minutePeople; person++) {
+            addPersonToShortest();
         }
     }
 
@@ -91,6 +97,29 @@ public class Simulation {
         int numPeople = getRandomNumPeople(r.nextDouble());
 
         return (numPeople > arrivalRate) ? arrivalRate : numPeople;
+    }
+
+    private void addPersonToShortest() {
+        int numQueues = allLines.length;
+        int minSize = allLines[0].size();
+        int minIndex = 0;
+
+        if (numQueues > 1) {
+            for (int checkIndex = 1; checkIndex < numQueues; checkIndex++) {
+                int tempSize = allLines[checkIndex].size();
+
+                if (tempSize < minSize) {
+                    minSize = tempSize;
+                    minIndex = checkIndex;
+                }
+            }
+        }
+
+        allLines[minIndex].offer(timer);
+    }
+
+    private void removeTwoFromEach() {
+
     }
 
 
