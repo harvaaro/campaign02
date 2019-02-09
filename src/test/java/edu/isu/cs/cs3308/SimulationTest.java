@@ -45,8 +45,6 @@ public class SimulationTest {
         for (int i = 1; i < strs.length; i++) {
             Matcher m = p.matcher(strs[i]);
             if (!m.find()) {
-//DEBUG
-fixture.tempTESTPRINT();
                 fail("Does not match expected output format!");
             }
         }

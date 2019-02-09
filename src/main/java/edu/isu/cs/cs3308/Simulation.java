@@ -24,7 +24,6 @@ public class Simulation {
     private int queueWaitedTime = 0;
     private int iterateWaitTime = 0;
     private LinkedQueue<Integer>[] allLines;
-    private LinkedQueue<Integer> avgWaitTimeList;
 
     /**
      * Constructs a new simulation with the given arrival rate and maximum number of queues. The Random
@@ -68,8 +67,6 @@ public class Simulation {
      * 8: Get final average wait time as: iterateWaitTime / numIterations
      */
     public void runSimulation() {
-        avgWaitTimeList = new LinkedQueue<>();
-
         for (numQueue = 1; numQueue <= maxNumQueues; numQueue++) {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
                 createQueueAmount();
@@ -82,13 +79,13 @@ public class Simulation {
                 iterateWaitTime += (queueWaitedTime / countPeopleDone);
             }
 
-            avgWaitTimeList.offer(iterateWaitTime / numIterations);
+            System.out.println("Average wait time using "
+                    +(numQueue)+" queue(s): "+(iterateWaitTime / numIterations));
+
             countPeopleDone = 0;
             queueWaitedTime = 0;
             iterateWaitTime = 0;
         }
-
-        avgWaitTimeList.printQueue();
     }
 
     private void createQueueAmount() {
@@ -108,8 +105,6 @@ public class Simulation {
     }
 
     private int getPeoplePerMinute() {
-//        int numPeople = getRandomNumPeople(r.nextDouble());
-//        return (numPeople > arrivalRate) ? arrivalRate : numPeople;
         return getRandomNumPeople(arrivalRate);
     }
 
@@ -145,10 +140,6 @@ public class Simulation {
                 countPeopleDone += 1;
             }
         }
-    }
-
-    public void tempTESTPRINT() {
-        avgWaitTimeList.printQueue();
     }
 
 
