@@ -16,7 +16,10 @@ public class Simulation {
     private int maxNumQueues;
     private Random r;
     private int numIterations = 50;
-    // You will probably need more fields
+
+    private int[] countPeople;
+    private int[] waitTimes;
+    private LinkedQueue[] allLines;
 
     /**
      * Constructs a new simulation with the given arrival rate and maximum number of queues. The Random
@@ -52,7 +55,10 @@ public class Simulation {
      * Executes the Simulation
      */
     public void runSimulation() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        allLines = new LinkedQueue[maxNumQueues];
+
+
+
     }
 
     /**
