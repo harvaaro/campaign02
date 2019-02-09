@@ -93,6 +93,8 @@ public class SimulationTest {
             if (m.find()) {
                 results[0][i - 1] = Integer.parseInt(m.group(1));
                 results[1][i - 1] = Integer.parseInt(m.group(2));
+                System.out.println(results[0][i - 1]);
+                System.out.println(results[1][i - 1]);
             } else {
                 fail();
             }

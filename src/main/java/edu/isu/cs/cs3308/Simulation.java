@@ -67,6 +67,9 @@ public class Simulation {
      * 8: Get final average wait time as: iterateWaitTime / numIterations
      */
     public void runSimulation() {
+        // for some reason needed this line to make the testResults work otherwise it skipped #1
+        System.out.println();
+
         for (numQueue = 1; numQueue <= maxNumQueues; numQueue++) {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
                 createQueueAmount();
@@ -141,7 +144,6 @@ public class Simulation {
             }
         }
     }
-
 
     /**
      * returns a number of people based on the provided average
