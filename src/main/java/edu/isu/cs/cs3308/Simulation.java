@@ -17,7 +17,7 @@ public class Simulation {
     private Random r;
     private int numIterations = 50;
 
-    private int minuteTimer = 0;
+    private int dailyMinutes = 720;
     private int countPeopleDone = 0;
     private int queueWaitTime = 0;
     private int iterateWaitTime = 0;
@@ -65,16 +65,32 @@ public class Simulation {
      * 8: Get final average wait time as: iterateWaitTime / numIterations
      */
     public void runSimulation() {
-        for (int numQueue = 0; numQueue < maxNumQueues; numQueue++) {
+        for (int numQueue = 1; numQueue <= maxNumQueues; numQueue++) {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
-                allLines = new LinkedQueue[numQueue];
+                createQueuesNeeded(numQueue);
                 getAverageWaitTime(numQueue);
             }
         }
     }
 
-    private void getAverageWaitTime(int numOfQueues) {
+    private void createQueuesNeeded(int numOfQueues) {
+        allLines = new LinkedQueue[numOfQueues];
 
+        for (int makeLanes = 0; makeLanes < numOfQueues; makeLanes++) {
+            allLines[makeLanes] = new LinkedQueue<Integer>();
+        }
+    }
+
+    private void getAverageWaitTime(int numOfQueues) {
+        for (int timer = 0; timer < dailyMinutes; timer++) {
+
+        }
+    }
+
+    private int getPeoplePerMinute() {
+        int numPeople = getRandomNumPeople(r.nextDouble());
+
+        return (numPeople > arrivalRate) ? arrivalRate : numPeople;
     }
 
 
