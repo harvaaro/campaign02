@@ -23,7 +23,7 @@ public class Simulation {
     private int countPeopleDone = 0;
     private int queueWaitedTime = 0;
     private int iterateWaitTime = 0;
-    private LinkedQueue[] allLines;
+    private LinkedQueue<Integer>[] allLines;
     private LinkedQueue<Integer> avgWaitTimeList;
 
     /**
@@ -95,7 +95,7 @@ public class Simulation {
         allLines = new LinkedQueue[numQueue];
 
         for (int makeLanes = 0; makeLanes < numQueue; makeLanes++) {
-            allLines[makeLanes] = new LinkedQueue<Integer>();
+            allLines[makeLanes] = new LinkedQueue<>();
         }
     }
 
@@ -108,9 +108,9 @@ public class Simulation {
     }
 
     private int getPeoplePerMinute() {
-        int numPeople = getRandomNumPeople(r.nextDouble());
-
-        return (numPeople > arrivalRate) ? arrivalRate : numPeople;
+//        int numPeople = getRandomNumPeople(r.nextDouble());
+//        return (numPeople > arrivalRate) ? arrivalRate : numPeople;
+        return getRandomNumPeople(arrivalRate);
     }
 
     private void addPersonToShortest() {
@@ -136,12 +136,12 @@ public class Simulation {
             int queueSize = allLines[whichQueue].size();
 
             if (queueSize >= 2) {
-                queueWaitedTime += currentTimer - (int) allLines[whichQueue].poll();
-                queueWaitedTime += currentTimer - (int) allLines[whichQueue].poll();
+                queueWaitedTime += currentTimer - allLines[whichQueue].poll();
+                queueWaitedTime += currentTimer - allLines[whichQueue].poll();
                 countPeopleDone += 2;
             }
             else if (queueSize == 1) {
-                queueWaitedTime += currentTimer - (int) allLines[whichQueue].poll();
+                queueWaitedTime += currentTimer - allLines[whichQueue].poll();
                 countPeopleDone += 1;
             }
         }

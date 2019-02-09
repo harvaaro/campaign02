@@ -333,8 +333,8 @@ public class SinglyLinkedList<E> implements List<E> {
 	}
 
 	/**
-	 * Each value in the list will be printed out with newline between them
-	 * except on the last value, which just ends without a newline after it
+	 * Each value in the list will be printed out with a defined newline between them
+	 * except on the last value, which just ends with a newline after it
 	 */
 	@Override
 	public void printList() {
