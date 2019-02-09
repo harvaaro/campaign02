@@ -1,6 +1,7 @@
 package edu.isu.cs.cs3308;
 
 import edu.isu.cs.cs3308.structures.impl.LinkedQueue;
+
 import java.util.Random;
 
 /**
@@ -18,7 +19,7 @@ public class Simulation {
 
     private int numQueue = 0;
     private int dailyMinutes = 720;
-    private int timer = 0;
+    private int currentTimer = 0;
     private int countPeopleDone = 0;
     private int queueWaitedTime = 0;
     private int iterateWaitTime = 0;
@@ -57,8 +58,8 @@ public class Simulation {
 
     /**
      * Executes the Simulation
-     * 1: Store the current time (timer) in the queue as that persons enter time.
-     * 2: When they leave get the: timer - that persons time.
+     * 1: Store the current time (currentTimer) in the queue as that persons enter time.
+     * 2: When they leave get the: currentTimer - that persons time.
      * 3: Add that number to the total amount of wait time (queueWaitedTime)
      * 4: Add to person counter to know how many have gone through (countPeopleDone)
      * 5: Once minuteTimer = dailyMinutes: queueWaitedTime / countPeopleDone
@@ -73,7 +74,7 @@ public class Simulation {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
                 createQueueAmount();
 
-                for (timer = 0; timer < dailyMinutes; timer++) {
+                for (currentTimer = 0; currentTimer < dailyMinutes; currentTimer++) {
                     addPeopleToQueues();
                     removeTwoFromEach();
                 }
@@ -82,6 +83,9 @@ public class Simulation {
             }
 
             avgWaitTimeList.offer(iterateWaitTime / numIterations);
+            countPeopleDone = 0;
+            queueWaitedTime = 0;
+            iterateWaitTime = 0;
         }
 
         avgWaitTimeList.printQueue();
@@ -117,14 +121,14 @@ public class Simulation {
             for (int checkIndex = 1; checkIndex < numQueue; checkIndex++) {
                 int tempSize = allLines[checkIndex].size();
 
-                if (tempSize <= minSize) {
+                if (tempSize < minSize) {
                     minSize = tempSize;
                     minIndex = checkIndex;
                 }
             }
         }
 
-        allLines[minIndex].offer(timer);
+        allLines[minIndex].offer(currentTimer);
     }
 
     private void removeTwoFromEach() {
@@ -132,12 +136,12 @@ public class Simulation {
             int queueSize = allLines[whichQueue].size();
 
             if (queueSize >= 2) {
-                queueWaitedTime += timer - (int) allLines[whichQueue].poll();
-                queueWaitedTime += timer - (int) allLines[whichQueue].poll();
+                queueWaitedTime += currentTimer - (int) allLines[whichQueue].poll();
+                queueWaitedTime += currentTimer - (int) allLines[whichQueue].poll();
                 countPeopleDone += 2;
             }
             else if (queueSize == 1) {
-                queueWaitedTime += timer - (int) allLines[whichQueue].poll();
+                queueWaitedTime += currentTimer - (int) allLines[whichQueue].poll();
                 countPeopleDone += 1;
             }
         }
