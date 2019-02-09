@@ -17,8 +17,10 @@ public class Simulation {
     private Random r;
     private int numIterations = 50;
 
-    private int[] countPeople;
-    private int[] waitTimes;
+    private int minuteTimer = 0;
+    private int countPeopleDone = 0;
+    private int queueWaitTime = 0;
+    private int iterateWaitTime = 0;
     private LinkedQueue[] allLines;
 
     /**
@@ -53,13 +55,28 @@ public class Simulation {
 
     /**
      * Executes the Simulation
+     * 1: Store the current time (minuteTimer) in the queue as that persons enter time.
+     * 2: When they leave get the minuteTimer - that persons time.
+     * 3: Add that number to the total amount of wait time (queueWaitTime)
+     * 4: Add to person counter to know how many have gone through (countPeopleDone)
+     * 5: Once minuteTimer = 720: queueWaitTime / countPeopleDone
+     * 6: Add that to a the average wait time per iteration (iterateWaitTime)
+     * 7: Repeat the steps 1-6 (numIterations) more times
+     * 8: Get final average wait time as: iterateWaitTime / numIterations
      */
     public void runSimulation() {
-        allLines = new LinkedQueue[maxNumQueues];
+        for (int numQueue = 0; numQueue < maxNumQueues; numQueue++) {
+            for (int numLoop = 0; numLoop < numIterations; numLoop++) {
+                allLines = new LinkedQueue[numQueue];
+                getAverageWaitTime(numQueue);
+            }
+        }
+    }
 
-
+    private void getAverageWaitTime(int numOfQueues) {
 
     }
+
 
     /**
      * returns a number of people based on the provided average
