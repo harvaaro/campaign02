@@ -74,7 +74,7 @@ public class Simulation {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
                 createQueueAmount();
 
-                for (currentTimer = 0; currentTimer < dailyMinutes; currentTimer++) {
+                for (currentTimer = 1; currentTimer <= dailyMinutes; currentTimer++) {
                     addPeopleToQueues();
                     removeTwoFromEach();
                 }
@@ -128,7 +128,7 @@ public class Simulation {
             }
         }
 
-        allLines[minIndex].offer(currentTimer);
+        allLines[minIndex].offer(currentTimer-1);
     }
 
     private void removeTwoFromEach() {
