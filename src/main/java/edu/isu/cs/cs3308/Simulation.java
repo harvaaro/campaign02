@@ -16,10 +16,11 @@ public class Simulation {
     private Random r;
     private int numIterations = 50;
 
+    private int numQueue = 0;
     private int dailyMinutes = 720;
     private int timer = 0;
     private int countPeopleDone = 0;
-    private int queueWaitTime = 0;
+    private int queueWaitedTime = 0;
     private int iterateWaitTime = 0;
     private LinkedQueue[] allLines;
 
@@ -65,9 +66,9 @@ public class Simulation {
      * 8: Get final average wait time as: iterateWaitTime / numIterations
      */
     public void runSimulation() {
-        for (int numQueue = 1; numQueue <= maxNumQueues; numQueue++) {
+        for (numQueue = 1; numQueue <= maxNumQueues; numQueue++) {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
-                createQueueAmount(numQueue);
+                createQueueAmount();
 
                 for (timer = 0; timer < dailyMinutes; timer++) {
                     addPeopleToQueues();
@@ -77,10 +78,10 @@ public class Simulation {
         }
     }
 
-    private void createQueueAmount(int numOfQueues) {
-        allLines = new LinkedQueue[numOfQueues];
+    private void createQueueAmount() {
+        allLines = new LinkedQueue[numQueue];
 
-        for (int makeLanes = 0; makeLanes < numOfQueues; makeLanes++) {
+        for (int makeLanes = 0; makeLanes < numQueue; makeLanes++) {
             allLines[makeLanes] = new LinkedQueue<Integer>();
         }
     }
@@ -100,12 +101,11 @@ public class Simulation {
     }
 
     private void addPersonToShortest() {
-        int numQueues = allLines.length;
         int minSize = allLines[0].size();
         int minIndex = 0;
 
-        if (numQueues > 1) {
-            for (int checkIndex = 1; checkIndex < numQueues; checkIndex++) {
+        if (numQueue > 1) {
+            for (int checkIndex = 1; checkIndex < numQueue; checkIndex++) {
                 int tempSize = allLines[checkIndex].size();
 
                 if (tempSize < minSize) {
@@ -119,7 +119,19 @@ public class Simulation {
     }
 
     private void removeTwoFromEach() {
+        for (int whichQueue = 0; whichQueue < numQueue; whichQueue++) {
+            int queueSize = allLines[whichQueue].size();
 
+            if (queueSize >= 2) {
+                queueWaitedTime += (int) allLines[whichQueue].poll();
+                queueWaitedTime += (int) allLines[whichQueue].poll();
+                countPeopleDone += 2;
+            }
+            else if (queueSize == 1) {
+                queueWaitedTime += (int) allLines[whichQueue].poll();
+                countPeopleDone += 1;
+            }
+        }
     }
 
 
