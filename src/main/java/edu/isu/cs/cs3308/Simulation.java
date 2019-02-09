@@ -8,7 +8,7 @@ import java.util.Random;
  * Class representing a wait time simulation program.
  *
  * @author Isaac Griffith
- * @author
+ * @author Aaron Harvey
  */
 public class Simulation {
 
