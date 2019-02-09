@@ -56,16 +56,18 @@ public class Simulation {
 
     /**
      * Executes the Simulation
-     * 1: Store the current time (minuteTimer) in the queue as that persons enter time.
-     * 2: When they leave get the minuteTimer - that persons time.
-     * 3: Add that number to the total amount of wait time (queueWaitTime)
+     * 1: Store the current time (timer) in the queue as that persons enter time.
+     * 2: When they leave get the: timer - that persons time.
+     * 3: Add that number to the total amount of wait time (queueWaitedTime)
      * 4: Add to person counter to know how many have gone through (countPeopleDone)
-     * 5: Once minuteTimer = 720: queueWaitTime / countPeopleDone
+     * 5: Once minuteTimer = dailyMinutes: queueWaitedTime / countPeopleDone
      * 6: Add that to a the average wait time per iteration (iterateWaitTime)
      * 7: Repeat the steps 1-6 (numIterations) more times
      * 8: Get final average wait time as: iterateWaitTime / numIterations
      */
     public void runSimulation() {
+        LinkedQueue<Integer> avgWaitTimeList = new LinkedQueue<>();
+
         for (numQueue = 1; numQueue <= maxNumQueues; numQueue++) {
             for (int numLoop = 0; numLoop < numIterations; numLoop++) {
                 createQueueAmount();
@@ -74,8 +76,14 @@ public class Simulation {
                     addPeopleToQueues();
                     removeTwoFromEach();
                 }
+
+                iterateWaitTime += (queueWaitedTime / countPeopleDone);
             }
+
+            avgWaitTimeList.offer(iterateWaitTime / numIterations);
         }
+
+        avgWaitTimeList.printQueue();
     }
 
     private void createQueueAmount() {
@@ -123,12 +131,12 @@ public class Simulation {
             int queueSize = allLines[whichQueue].size();
 
             if (queueSize >= 2) {
-                queueWaitedTime += (int) allLines[whichQueue].poll();
-                queueWaitedTime += (int) allLines[whichQueue].poll();
+                queueWaitedTime += timer - (int) allLines[whichQueue].poll();
+                queueWaitedTime += timer - (int) allLines[whichQueue].poll();
                 countPeopleDone += 2;
             }
             else if (queueSize == 1) {
-                queueWaitedTime += (int) allLines[whichQueue].poll();
+                queueWaitedTime += timer - (int) allLines[whichQueue].poll();
                 countPeopleDone += 1;
             }
         }
